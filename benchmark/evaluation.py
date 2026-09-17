@@ -84,7 +84,7 @@ def infer(submission, manifest, phase, image_root, checkpoint_path, batch_size=3
             raise ValueError("External ONNX tensor files are not allowed")
         for descriptor, value in proto.ListFields():
             if descriptor.type == descriptor.TYPE_MESSAGE:
-                if descriptor.label == descriptor.LABEL_REPEATED:
+                if descriptor.is_repeated:
                     for child in value:
                         reject_external(child)
                 else:
