@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "id": "turki-example",
+  "participant": "turki",
+  "model_name": "Replace with your trained model name",
+  "paper_url": "https://proceedings.mlr.press/v139/tan21a.html",
+  "code_url": "https://github.com/turkialjutaili/Shuaa",
+  "source_commit": "0000000000000000000000000000000000000000",
+  "checkpoint_url": "https://github.com/turkialjutaili/Shuaa/releases/download/REPLACE/model.onnx",
+  "checkpoint_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "split_hash": "043313273c135d80e4a298717c19253145ec1156eb99dc69441b78dcbd4139f5",
+  "classes": [
+    "Cell",
+    "Cell-Multi",
+    "Cracking",
+    "Hot-Spot",
+    "Hot-Spot-Multi",
+    "Shadowing",
+    "Diode",
+    "Diode-Multi",
+    "Vegetation",
+    "Soiling",
+    "Offline-Module",
+    "No-Anomaly"
+  ],
+  "preprocess": {
+    "input_size": 224,
+    "color_mode": "RGB",
+    "resize": "bilinear",
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ]
+  }
+}

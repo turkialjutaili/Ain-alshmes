@@ -1,0 +1,13 @@
+{
+  "id": "turki101/shuaa-training",
+  "title": "Shuaa Training",
+  "code_file": "shuaa_training.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}
