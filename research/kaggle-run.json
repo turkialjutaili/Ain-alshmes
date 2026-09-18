@@ -4,9 +4,12 @@
   "version": 1,
   "training_source_commit": "42e0b4610206e80a5fc2af62efc95a5adbfc5657",
   "observed_running_at": "2026-09-17T21:23:29.696895+00:00",
-  "status": "running",
+  "status": "complete",
   "requested_accelerator": "NvidiaTeslaT4",
   "campaign_budget_hours": 11,
   "test_evaluated": false,
-  "collect_command": "python scripts/collect_kaggle.py --publish"
+  "collect_command": "python scripts/collect_kaggle.py --publish",
+  "finished_at": "2026-09-18T02:45:58.152043+00:00",
+  "release_url": "https://github.com/turkialjutaili/Shuaa/releases/tag/training-20260918-024537",
+  "submission_id": "turki-training-20260918-024537"
 }
