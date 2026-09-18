@@ -21,6 +21,10 @@ Copy `submissions/example.json.example` to `submissions/<unique-id>.json` and re
 
 Push the submission or merge a pull request into `main`. Open the **Shuaa benchmark and Pages** workflow under Actions. It computes validation metrics, preserves the result in `results/`, regenerates the leaderboard and publishes the site. Failures are shown without replacing previous successes.
 
+### Hyperparameters
+
+The supplied exporter records a `training` object for the model-details Hyperparameters section. It includes the ensemble method and one component per trained model: `run_id`, `model_name`, `seed`, `epochs_completed`, `configured_epochs`, `optimizer`, `initial_learning_rate`, and `weighted_loss`. Record actual completed epochs separately from the configured maximum; early stopping may make them different. The learning rate is the initial value, not every value of a cosine schedule. For ensembles, report each component rather than adding their epochs together. Use training logs as evidence; these settings are reported provenance, not independently reconstructed from ONNX weights. Historical records without settings are displayed as unavailable.
+
 ## 4. Lock the final test
 
 Agree on one final submission per participating person before inspecting any test result. Use `python scripts/lock_finalists.py --help` to create the lock file after the validation stage. The lock includes the exact submission-file and checkpoint hashes.

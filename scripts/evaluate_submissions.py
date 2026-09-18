@@ -37,6 +37,44 @@ def select_submissions(paths, phase, finalists_path):
     return selected
 
 
+def cached_success(root, submission, phase, evaluation_key):
+    """Return only the exact manifest's prior successful measurement."""
+    path = root / "results" / f"{evaluation_key}.json"
+    if not path.exists():
+        return None, None
+    record = json.loads(path.read_text(encoding="utf-8"))
+    bound = ("id", "participant", "model_name", "source_commit", "paper_url", "code_url", "checkpoint_sha256", "split_hash")
+    if (record.get("status") != "success" or record.get("phase") != phase
+            or any(record.get(key) != submission[key] for key in bound)):
+        return None, None
+    # Existing files are named by the immutable submission evaluation ID. New
+    # records also carry this field, while the filename preserves legacy proof.
+    if path.stem != evaluation_key:
+        return None, None
+    immutable_submission = {key: value for key, value in submission.items() if key != "training"}
+    # New records preserve the complete inference contract. A legacy record can
+    # be trusted only when its original evaluation hash proves the same contract.
+    if "submission_contract" in record:
+        if record["submission_contract"] != immutable_submission:
+            return None, None
+    elif record.get("evaluation_id") != evaluation_key:
+        return None, None
+    return path, record
+
+
+def enrich_cached_result(record, submission, submission_sha256, evaluation_key):
+    """Attach current, validated provenance without changing measured metrics."""
+    record.update({key: submission[key] for key in ["id", "participant", "model_name", "source_commit", "paper_url", "code_url", "checkpoint_sha256"]})
+    if "training" in submission:
+        record["training"] = submission["training"]
+    else:
+        record.pop("training", None)
+    record["submission_sha256"] = submission_sha256
+    record["evaluation_id"] = evaluation_key
+    record["submission_contract"] = {key: value for key, value in submission.items() if key != "training"}
+    return record
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--phase", choices=["validation", "test"], default="validation")
@@ -66,10 +104,16 @@ def main():
                 raise ValueError("Submission filename must equal its id")
             result_key = evaluation_id(submission, args.phase)
             result_path = ROOT / "results" / f"{result_key}.json"
-            if result_path.exists() and json.loads(result_path.read_text())["status"] == "success":
-                print(f"Cached successful evaluation: {submission['id']}")
+            cached_path, cached = cached_success(ROOT, submission, args.phase, result_key)
+            if cached:
+                enriched = enrich_cached_result(cached, submission, file_sha256(path), result_key)
+                cached_path.write_text(json.dumps(enriched, indent=2) + "\n", encoding="utf-8")
+                print(f"Cached successful evaluation metadata enriched: {submission['id']}")
                 continue
             base.update({key: submission[key] for key in ["id", "participant", "model_name", "source_commit", "paper_url", "code_url", "checkpoint_sha256"]})
+            if "training" in submission:
+                base["training"] = submission["training"]
+            base["submission_contract"] = {key: value for key, value in submission.items() if key != "training"}
             base["submission_sha256"] = file_sha256(path)
             model_path = checkpoint(submission, ROOT / "data" / "checkpoints")
             base.update(infer(submission, manifest, args.phase, ROOT / "data" / "infrared", model_path, args.batch_size))

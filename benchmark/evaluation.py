@@ -123,7 +123,10 @@ def infer(submission, manifest, phase, image_root, checkpoint_path, batch_size=3
 
 
 def evaluation_id(submission, phase):
-    return hashlib.sha256(json.dumps({"submission": submission, "phase": phase, "evaluator_version": 1}, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    # Training notes can be enriched after a measurement. Every other manifest
+    # field, including identity and preprocessing, remains bound to the result.
+    immutable_submission = {key: value for key, value in submission.items() if key != "training"}
+    return hashlib.sha256(json.dumps({"submission": immutable_submission, "phase": phase, "evaluator_version": 1}, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
 
 
 def write_leaderboard(root):

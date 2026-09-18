@@ -10,6 +10,7 @@ from benchmark.dataset import grouped_split, load_manifest, manifest_hash, safe_
 from benchmark.evaluation import metrics, validate_probabilities, validate_submission, write_leaderboard
 from benchmark.evaluation import infer
 from benchmark.dataset import decoded_hash
+from scripts.evaluate_submissions import cached_success, enrich_cached_result
 from PIL import Image
 import onnx
 from onnx import helper, TensorProto, numpy_helper
@@ -97,6 +98,41 @@ class BenchmarkTests(unittest.TestCase):
             payload = write_leaderboard(directory)
             self.assertEqual(payload["results"], [])
             self.assertIsNone(payload["updated_at"])
+
+    def test_training_metadata_is_optional_and_records_each_ensemble_component(self):
+        root = Path(__file__).resolve().parents[1]
+        submission = json.loads((root / "submissions" / "turki-training-20260918-024537.json").read_text())
+        validate_submission(submission, submission["split_hash"])
+        components = submission["training"]["components"]
+        self.assertEqual([component["epochs_completed"] for component in components], [35, 19])
+        self.assertTrue(all(component["optimizer"] == "AdamW" for component in components))
+        self.assertTrue(all(component["initial_learning_rate"] == .0001 for component in components))
+        legacy = copy.deepcopy(submission)
+        legacy.pop("training")
+        validate_submission(legacy, legacy["split_hash"])
+
+    def test_metadata_cache_isolated_by_immutable_submission_and_handles_legacy_metadata(self):
+        root = Path(__file__).resolve().parents[1]
+        submission = json.loads((root / "submissions" / "turki-training-20260918-024537.json").read_text())
+        from benchmark.evaluation import evaluation_id
+        key = evaluation_id(submission, "validation")
+        record = {"status": "success", "phase": "validation", "evaluation_id": key,
+                  **{name: submission[name] for name in ("id", "participant", "model_name", "source_commit", "paper_url", "code_url", "checkpoint_sha256", "split_hash")}}
+        with tempfile.TemporaryDirectory() as directory:
+            result_dir = Path(directory) / "results"
+            result_dir.mkdir()
+            (result_dir / f"{key}.json").write_text(json.dumps(record))
+            self.assertIsNotNone(cached_success(Path(directory), submission, "validation", key)[1])
+            changed_participant = copy.deepcopy(submission)
+            changed_participant["participant"] = "mazen"
+            self.assertIsNone(cached_success(Path(directory), changed_participant, "validation", evaluation_id(changed_participant, "validation"))[1])
+            changed_preprocess = copy.deepcopy(submission)
+            changed_preprocess["preprocess"]["input_size"] = 32
+            self.assertIsNone(cached_success(Path(directory), changed_preprocess, "validation", evaluation_id(changed_preprocess, "validation"))[1])
+            legacy = copy.deepcopy(submission)
+            legacy.pop("training")
+            enriched = enrich_cached_result({"training": submission["training"]}, legacy, "hash", key)
+            self.assertNotIn("training", enriched)
 
     def test_cpu_inference_full_pipeline_does_not_read_test(self):
         with tempfile.TemporaryDirectory() as directory:
