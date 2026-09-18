@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "id": "turki-training-20260918-024537",
+  "participant": "turki",
+  "model_name": "convnextv2_tiny.fcmae_ft_in1k + convnextv2_tiny.fcmae_ft_in1k",
+  "paper_url": "https://arxiv.org/abs/2301.00808",
+  "code_url": "https://github.com/turkialjutaili/Shuaa/tree/42e0b4610206e80a5fc2af62efc95a5adbfc5657",
+  "source_commit": "42e0b4610206e80a5fc2af62efc95a5adbfc5657",
+  "checkpoint_url": "https://github.com/turkialjutaili/Shuaa/releases/download/training-20260918-024537/model.onnx",
+  "checkpoint_sha256": "df11dbd996d3b367282bec627dfb2f63ad573b02d5817e6fb27c9b20a77151ad",
+  "split_hash": "043313273c135d80e4a298717c19253145ec1156eb99dc69441b78dcbd4139f5",
+  "preprocess": {
+    "input_size": 224,
+    "color_mode": "RGB",
+    "resize": "bilinear",
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ]
+  },
+  "classes": [
+    "Cell",
+    "Cell-Multi",
+    "Cracking",
+    "Hot-Spot",
+    "Hot-Spot-Multi",
+    "Shadowing",
+    "Diode",
+    "Diode-Multi",
+    "Vegetation",
+    "Soiling",
+    "Offline-Module",
+    "No-Anomaly"
+  ]
+}
