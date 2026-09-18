@@ -14,3 +14,7 @@
   .sidebar.open,[dir=rtl] .sidebar.open{display:flex;transform:none}
   .sidebar-close{display:flex;align-self:flex-end;align-items:center;justify-content:center;flex:none;width:36px;height:36px;background:#26364e;color:white;border-radius:6px;margin-bottom:12px}
 }
+
+/* Keep wide result tables and their absolute accessible labels inside the page. */
+.layout{overflow-x:clip}
+.table-wrap{position:relative}
