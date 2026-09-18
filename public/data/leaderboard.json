@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": null,
+  "updated_at": "2026-09-18T10:36:20.704245+00:00",
   "classes": [
     "Cell",
     "Cell-Multi",
@@ -29,5 +29,282 @@
       "name": "Mazen"
     }
   ],
-  "results": []
+  "results": [
+    {
+      "id": "turki-training-20260918-024537",
+      "participant": "turki",
+      "model_name": "convnextv2_tiny.fcmae_ft_in1k + convnextv2_tiny.fcmae_ft_in1k",
+      "phase": "validation",
+      "evaluated_at": "2026-09-18T10:36:20.704245+00:00",
+      "split_hash": "043313273c135d80e4a298717c19253145ec1156eb99dc69441b78dcbd4139f5",
+      "source_commit": "42e0b4610206e80a5fc2af62efc95a5adbfc5657",
+      "paper_url": "https://arxiv.org/abs/2301.00808",
+      "code_url": "https://github.com/turkialjutaili/Shuaa/tree/42e0b4610206e80a5fc2af62efc95a5adbfc5657",
+      "checkpoint_sha256": "df11dbd996d3b367282bec627dfb2f63ad573b02d5817e6fb27c9b20a77151ad",
+      "submission_sha256": "da507614650937900c7042acbc5644b83887f10f5ac6c82528b01c0c0564dc2d",
+      "accuracy": 0.8507164278573809,
+      "macro_f1": 0.7378194363249829,
+      "balanced_accuracy": 0.7153456032528219,
+      "per_class": [
+        {
+          "label": "Cell",
+          "precision": 0.6699029126213593,
+          "recall": 0.7340425531914894,
+          "f1": 0.700507614213198,
+          "support": 282
+        },
+        {
+          "label": "Cell-Multi",
+          "precision": 0.5747126436781609,
+          "recall": 0.5181347150259067,
+          "f1": 0.5449591280653951,
+          "support": 193
+        },
+        {
+          "label": "Cracking",
+          "precision": 0.7446808510638298,
+          "recall": 0.7446808510638298,
+          "f1": 0.7446808510638298,
+          "support": 141
+        },
+        {
+          "label": "Hot-Spot",
+          "precision": 0.7297297297297297,
+          "recall": 0.7297297297297297,
+          "f1": 0.7297297297297297,
+          "support": 37
+        },
+        {
+          "label": "Hot-Spot-Multi",
+          "precision": 0.7142857142857143,
+          "recall": 0.6756756756756757,
+          "f1": 0.6944444444444444,
+          "support": 37
+        },
+        {
+          "label": "Shadowing",
+          "precision": 0.8226950354609929,
+          "recall": 0.7295597484276729,
+          "f1": 0.7733333333333333,
+          "support": 159
+        },
+        {
+          "label": "Diode",
+          "precision": 0.9771689497716894,
+          "recall": 0.9511111111111111,
+          "f1": 0.963963963963964,
+          "support": 225
+        },
+        {
+          "label": "Diode-Multi",
+          "precision": 0.9565217391304348,
+          "recall": 0.8461538461538461,
+          "f1": 0.8979591836734694,
+          "support": 26
+        },
+        {
+          "label": "Vegetation",
+          "precision": 0.7467811158798283,
+          "recall": 0.7073170731707317,
+          "f1": 0.7265135699373695,
+          "support": 246
+        },
+        {
+          "label": "Soiling",
+          "precision": 0.5,
+          "recall": 0.2903225806451613,
+          "f1": 0.3673469387755102,
+          "support": 31
+        },
+        {
+          "label": "Offline-Module",
+          "precision": 0.8484848484848485,
+          "recall": 0.6774193548387096,
+          "f1": 0.7533632286995515,
+          "support": 124
+        },
+        {
+          "label": "No-Anomaly",
+          "precision": 0.9351145038167938,
+          "recall": 0.98,
+          "f1": 0.95703125,
+          "support": 1500
+        }
+      ],
+      "confusion_matrix": [
+        [
+          207,
+          31,
+          4,
+          2,
+          0,
+          2,
+          1,
+          0,
+          21,
+          2,
+          1,
+          11
+        ],
+        [
+          37,
+          100,
+          22,
+          0,
+          0,
+          7,
+          1,
+          0,
+          16,
+          2,
+          0,
+          8
+        ],
+        [
+          3,
+          19,
+          105,
+          1,
+          1,
+          0,
+          0,
+          0,
+          9,
+          1,
+          0,
+          2
+        ],
+        [
+          1,
+          0,
+          0,
+          27,
+          4,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          3
+        ],
+        [
+          0,
+          1,
+          0,
+          3,
+          25,
+          2,
+          0,
+          0,
+          0,
+          0,
+          2,
+          4
+        ],
+        [
+          7,
+          4,
+          2,
+          2,
+          1,
+          116,
+          0,
+          0,
+          5,
+          0,
+          1,
+          21
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          214,
+          0,
+          0,
+          0,
+          3,
+          7
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          22,
+          0,
+          0,
+          1,
+          2
+        ],
+        [
+          39,
+          11,
+          6,
+          0,
+          0,
+          4,
+          0,
+          0,
+          174,
+          4,
+          2,
+          6
+        ],
+        [
+          6,
+          4,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          3,
+          9,
+          0,
+          4
+        ],
+        [
+          4,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0,
+          84,
+          34
+        ],
+        [
+          5,
+          4,
+          1,
+          0,
+          3,
+          6,
+          1,
+          0,
+          5,
+          0,
+          5,
+          1470
+        ]
+      ],
+      "sample_count": 3001,
+      "predictions_path": "results/predictions/c072b8035872b546282bfe13935c74bedd85fdbb2a133a3a072669e4385e9ce4.json",
+      "status": "success",
+      "evaluation_id": "c072b8035872b546282bfe13935c74bedd85fdbb2a133a3a072669e4385e9ce4"
+    }
+  ]
 }
