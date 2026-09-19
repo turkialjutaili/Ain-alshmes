@@ -85,8 +85,23 @@ function shell() {
     ${loadError ? `<div class="notice error" role="alert">${t('We couldn’t load the evaluation record. The leaderboard below is unavailable.', 'تعذر تحميل سجل التقييم. لوحة الترتيب غير متاحة حاليًا.')} <button data-action="reload">${t('Try again', 'إعادة المحاولة')}</button></div>` : ''}
     ${loading ? `<div class="notice" role="status">${t('Loading the evaluation record…', 'جارٍ تحميل سجل التقييم…')}</div>` : ''}
     ${view === 'overview' ? overview() : view === 'experiments' ? experiments() : view === 'compare' ? compare() : view === 'protocol' ? protocol() : submit()}
+    ${view === 'overview' || view === 'experiments' ? reportedExperiments() : ''}
     <footer><span>© ${new Date().getFullYear()} ${t('Shuaa Research', 'شعاع للأبحاث')}</span><span>${t('Open research. Measurable progress.', 'بحث مفتوح. تقدم قابل للقياس.')}</span><a href="${repo}" target="_blank" rel="noopener noreferrer">GitHub ${icon('external')}</a></footer></main></div></div>${modalId ? details(modalId) : ''}`;
   if (modalId) { document.querySelector<HTMLButtonElement>('.modal-close')?.focus(); }
+}
+
+// Researcher-reported local runs are displayed separately from evaluator-generated rankings.
+function reportedExperiments() {
+  const release = `${repo}/releases/tag/mazen-swin-small-local-20260919`;
+  const archive = `${repo}/releases/download/mazen-swin-small-local-20260919/mazen_swin_small_results.zip`;
+  return `<section class="card recent-card" aria-labelledby="reported-experiments-title">
+    <div class="card-heading"><div><h2 id="reported-experiments-title">${t('Experiment results', 'نتائج التجارب')}</h2><p>${t('Researcher-reported results on individual data splits.', 'نتائج يشاركها الباحثون على تقسيماتهم الخاصة للبيانات.')}</p></div><span class="status pending">${t('Reported locally', 'تقييم محلي')}</span></div>
+    <div class="table-wrap"><table><thead><tr><th>${t('Researcher / model', 'الباحث / النموذج')}</th><th>${t('Test accuracy', 'دقة الاختبار')}</th><th>Macro-F1</th><th>${t('Test images', 'صور الاختبار')}</th></tr></thead>
+    <tbody><tr><td><div class="researcher-cell">${avatar('mazen')}<div><strong>${escape(name('mazen'))}</strong><small>Swin-Small · ImageNet-22K → 1K</small></div></div></td><td class="metric">${percent(0.849799732977303)}</td><td class="metric">${percent(0.7383886177348331)}</td><td>2,996</td></tr></tbody></table></div>
+    <div class="padded"><p>${t('34 epochs completed out of 40; best checkpoint: epoch 28. Test predictions average logits from the original image and its horizontal flip (TTA).', 'اكتملت 34 دورة من أصل 40؛ أفضل نسخة من الدورة 28. يستخدم الاختبار متوسط مخرجات الصورة ونسختها المعكوسة أفقيًا (TTA).')}</p>
+    <p class="notice">${t('Different split from the shared benchmark. These scores are not part of the verified ranking and are not directly comparable with its scores.', 'تقسيم مختلف عن المعيار المشترك. هذه الأرقام خارج الترتيب الموحّد ولا تُقارن مباشرة بنتائجه.')}</p>
+    <div class="detail-links">${link(release, t('Experiment details', 'تفاصيل التجربة'))}${link(archive, t('Download charts and reports', 'تحميل الرسوم والتقارير'))}</div></div>
+  </section>`;
 }
 
 function overview() {
